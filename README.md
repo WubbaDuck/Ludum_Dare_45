@@ -1,2 +1,2 @@
-# Ludum_Dare_44
-Placeholder project for my Ludum Dare 44 entry
+# Ludum_Dare_45
+Placeholder project for my Ludum Dare 45 entry
