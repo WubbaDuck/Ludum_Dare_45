@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [ExecuteAlways]
-public class SnapToGrid : MonoBehaviour
+public class SnapToGridCrafting : MonoBehaviour
 {
     public float grid = 0.5f;
     float x = 0f;
@@ -11,7 +11,7 @@ public class SnapToGrid : MonoBehaviour
 
     void Update()
     {
-        if (grid > 0f)
+        if (grid > 0f && Application.isEditor && !Application.isPlaying)
         {
             float reciprocalGrid = 1f / grid;
             x = Mathf.Round(transform.position.x * reciprocalGrid) / reciprocalGrid;

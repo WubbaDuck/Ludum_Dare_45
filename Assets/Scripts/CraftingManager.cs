@@ -75,13 +75,13 @@ public class CraftingManager : MonoBehaviour, IPointerClickHandler, IPointerEnte
 
     public void OnPointerEnter(PointerEventData eventData)
     {
-        image.color = new Color(255, 255, 255, 200);
+        image.color = new Color(255, 255, 255, 0.9f);
         infoBody.text = craftingInfo;
     }
 
     public void OnPointerExit(PointerEventData eventData)
     {
-        image.color = new Color(255, 255, 255, 0);
+        image.color = new Color(255, 255, 255, 0.1f);
         infoBody.text = "";
     }
 

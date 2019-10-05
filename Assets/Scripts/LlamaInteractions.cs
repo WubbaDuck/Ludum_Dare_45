@@ -6,6 +6,7 @@ using UnityEngine.UI;
 public class LlamaInteractions : MonoBehaviour
 {
     public Collider2D interactableCollider;
+    public GameObject inventoryPanel;
 
     // Harvesting stuff
     private bool interactTrigger = false;
@@ -16,7 +17,8 @@ public class LlamaInteractions : MonoBehaviour
     private GameObject thingToHarvest;
     private string successfulHarvestOutputName = "";
     private int successfulHarvestOutputQuantity = 0;
-    InventoryManager im;
+    private InventoryManager im;
+    private InventoryDisplayController ids;
 
     // Progress bar stuff
     private Image progressBar;
@@ -24,9 +26,14 @@ public class LlamaInteractions : MonoBehaviour
     // Crafting Stuff
     public GameObject craftingMenuCanvas;
 
+    // Place-able Items
+    public GameObject[] placeablePrefabs;
+    public GameObject objectsParent;
+
     void Start()
     {
         im = gameObject.transform.GetComponent<InventoryManager>();
+        ids = inventoryPanel.transform.GetComponent<InventoryDisplayController>();
         progressBar = transform.Find("InteractionProgressCanvas").Find("CircuilarProgressBar").GetComponent<Image>();
         ResetHarvesting();
 
@@ -46,7 +53,7 @@ public class LlamaInteractions : MonoBehaviour
             {
                 if (menu.GetChild(i).name.Split('_') [0] == "CraftingItem")
                 {
-                    menu.GetChild(i).GetComponent<Image>().color = new Color(255, 255, 255, 0);
+                    menu.GetChild(i).GetComponent<Image>().color = new Color(255, 255, 255, 0.1f);
                 }
             }
         }
@@ -60,7 +67,24 @@ public class LlamaInteractions : MonoBehaviour
             }
             else
             {
-                Debug.Log("Place Item");
+                // Place the currently selected item
+                foreach (GameObject obj in placeablePrefabs)
+                {
+                    if (obj.name == ids.GetSelectedItem())
+                    {
+                        if (im.AmountInInventory(ids.GetSelectedItem()) > 0)
+                        {
+                            float spawnDistance = 1f;
+                            Vector3 spawnPos = transform.position + transform.up * spawnDistance;
+
+                            GameObject newObj = Instantiate(obj, spawnPos, Quaternion.identity);
+                            newObj.transform.parent = objectsParent.transform;
+                            newObj.name = obj.name;
+                            im.RemoveItemFromInventory(obj.name);
+                            break;
+                        }
+                    }
+                }
             }
         }
 
@@ -112,19 +136,31 @@ public class LlamaInteractions : MonoBehaviour
                         Harvest(other.gameObject, "Stick", 2, 1.5f);
                         break;
                     case "Stick":
-                        Harvest(other.gameObject, "Stick", 1, 0f);
+                        Harvest(other.gameObject, "Stick", 1, 0.5f);
                         break;
                     case "Rock":
                         Harvest(other.gameObject, "Stone", 2, 3f);
                         break;
                     case "Stone":
-                        Harvest(other.gameObject, "Stone", 1, 0f);
+                        Harvest(other.gameObject, "Stone", 1, 0.5f);
                         break;
                     case "Grass":
                         Harvest(other.gameObject, "Grass", 1, 1);
                         break;
                     case "Egg":
-                        Harvest(other.gameObject, "Egg", 1, 0f);
+                        Harvest(other.gameObject, "Egg", 1, 0.5f);
+                        break;
+                    case "Nest":
+                        Harvest(other.gameObject, "Nest", 1, 1f);
+                        break;
+                    case "Fence":
+                        Harvest(other.gameObject, "Fence", 1, 1.5f);
+                        break;
+                    case "Gate":
+                        Harvest(other.gameObject, "Gate", 1, 2f);
+                        break;
+                    case "Hay":
+                        Harvest(other.gameObject, "Hay", 1, 1f);
                         break;
                     default:
                         break;

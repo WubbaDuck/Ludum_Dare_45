@@ -11,6 +11,11 @@ public class InventoryDisplayController : MonoBehaviour
 
     private string selectedItem = "";
 
+    public string GetSelectedItem()
+    {
+        return selectedItem;
+    }
+
     // Start is called before the first frame update
     void Start()
     {
@@ -27,6 +32,7 @@ public class InventoryDisplayController : MonoBehaviour
     {
         int enabledCount = 0;
         GameObject[] enabledObjects = new GameObject[transform.childCount];
+        bool selectedRemoved = false;
 
         // Update the displayed inventory items
         for (int i = 0; i < transform.childCount; i++)
@@ -35,39 +41,47 @@ public class InventoryDisplayController : MonoBehaviour
 
             if (int.Parse(thisChild.transform.Find("Count").GetComponent<Text>().text) > 0)
             {
-                thisChild.SetActive(true);
+                if (!thisChild.activeInHierarchy)
+                {
+                    thisChild.SetActive(true);
+                    thisChild.GetComponent<Image>().color = new Color(255, 255, 255, 0.75f);
+                }
+
                 thisChild.transform.localPosition = new Vector2(baseX, baseY - enabledCount * yStep + GetComponentInParent<RectTransform>().rect.height / 2);
                 enabledObjects[enabledCount] = thisChild;
                 enabledCount++;
             }
             else
             {
-                transform.GetChild(i).gameObject.transform.localPosition = new Vector2(baseX, baseY);
+                thisChild.transform.localPosition = new Vector2(baseX, baseY);
                 thisChild.SetActive(false);
+
+                if (thisChild.name == selectedItem)
+                {
+                    selectedRemoved = true;
+                }
             }
+        }
+
+        if (enabledCount == 0)
+        {
+            selectedItem = "";
+        }
+        else if (selectedRemoved)
+        {
+            selectedItem = enabledObjects[0].name;
+            transform.Find(selectedItem).GetComponentInChildren<Image>().color = new Color(240, 200, 0, 0.75f);
         }
 
         // Switch to the next selected item
         if (Input.GetKeyDown(KeyCode.F))
         {
-
-            // If one inventory item
-            if (enabledCount == 1)
-            {
-                transform.Find(selectedItem).GetComponentInChildren<Image>().color = new Color(255, 255, 255, 0.75f);
-                selectedItem = enabledObjects[0].transform.Find("Label").GetComponent<Text>().text;
-                transform.Find(selectedItem).GetComponentInChildren<Image>().color = new Color(240, 200, 0, 0.75f);
-            }
-            else if (enabledCount == 0) // If no inventory items
-            {
-                selectedItem = "";
-            }
             if (enabledCount > 1) // If multiple inventory items
             {
                 for (int i = 0; i < enabledCount; i++)
                 {
                     // Debug.Log(enabledObjects[i].transform.Find("Label").GetComponentInChildren<Text>().text);
-                    if (enabledObjects[i].transform.Find("Label").GetComponent<Text>().text == selectedItem) // Find the currently selected item
+                    if (enabledObjects[i].transform.Find("Label").GetComponent<Text>().text == selectedItem || selectedItem == "") // Find the currently selected item
                     {
                         if (i + 1 >= enabledCount) // If this is the last item in the list
                         {
@@ -87,8 +101,19 @@ public class InventoryDisplayController : MonoBehaviour
                         }
                     }
                 }
-
             }
+        }
+
+        // If one inventory item
+        if (enabledCount == 1)
+        {
+            transform.Find(selectedItem).GetComponentInChildren<Image>().color = new Color(255, 255, 255, 0.75f);
+            selectedItem = enabledObjects[0].transform.Find("Label").GetComponent<Text>().text;
+            transform.Find(selectedItem).GetComponentInChildren<Image>().color = new Color(240, 200, 0, 0.75f);
+        }
+        else if (enabledCount == 0) // If no inventory items
+        {
+            selectedItem = "";
         }
     }
 }
