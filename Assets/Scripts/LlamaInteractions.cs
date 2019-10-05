@@ -17,7 +17,6 @@ public class LlamaInteractions : MonoBehaviour
     private string successfulHarvestOutputName = "";
     private int successfulHarvestOutputQuantity = 0;
     InventoryManager im;
-    private bool craftingComplete = false;
 
     // Progress bar stuff
     private Image progressBar;
@@ -61,7 +60,6 @@ public class LlamaInteractions : MonoBehaviour
         if (Input.GetKeyUp(KeyCode.E))
         {
             interactTrigger = false;
-            craftingComplete = true;
             ResetHarvesting();
         }
     }
@@ -79,7 +77,7 @@ public class LlamaInteractions : MonoBehaviour
 
             if (interactableCollider.IsTouchingLayers(LayerMask.GetMask("Interactables")))
             {
-                switch (other.name)
+                switch (other.name.Split(char.Parse(" ")) [0])
                 {
                     case "Tree":
                         Harvest(other.gameObject, "Sticks", 2, 1.5f);
