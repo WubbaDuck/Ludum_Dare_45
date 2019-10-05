@@ -1,14 +1,15 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class LlamaInteractions : MonoBehaviour
 {
     public Collider2D interactableCollider;
 
+    // Harvesting stuff
     private bool interactTrigger = false;
     private bool harvestingTimerStarted = false;
-    private bool harvestingKeyHeld = false;
     private float startTime = 0f;
     private float timer = 0f;
     private float harvestingTime = 2.0f;
@@ -17,9 +18,14 @@ public class LlamaInteractions : MonoBehaviour
     private int successfulHarvestOutputQuantity = 0;
     InventoryManager im;
 
+    // Progress bar stuff
+    private Image progressBar;
+
     void Start()
     {
         im = gameObject.transform.GetComponent<InventoryManager>();
+        progressBar = transform.Find("InteractionProgressCanvas").Find("CircuilarProgressBar").GetComponent<Image>();
+        progressBar.fillAmount = 0f;
     }
 
     void Update()
@@ -28,11 +34,16 @@ public class LlamaInteractions : MonoBehaviour
         {
             interactTrigger = true;
             timer += Time.deltaTime;
+
+            if (harvestingTime != 0f)
+            {
+                progressBar.fillAmount = (timer - startTime) / harvestingTime;
+            }
         }
         else
         {
             interactTrigger = false;
-
+            progressBar.fillAmount = 0f;
             ResetHarvesting();
         }
 
@@ -45,7 +56,14 @@ public class LlamaInteractions : MonoBehaviour
 
             Destroy(thingToHarvest);
             harvestingTimerStarted = false;
+            progressBar.fillAmount = 0f;
+            ResetHarvesting();
         }
+    }
+
+    void FixedUpdate()
+    {
+        progressBar.transform.position = transform.position;
     }
 
     void OnTriggerStay2D(Collider2D other)
