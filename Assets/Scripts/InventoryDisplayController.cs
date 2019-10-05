@@ -9,6 +9,8 @@ public class InventoryDisplayController : MonoBehaviour
     float baseY = -9f;
     float yStep = 15;
 
+    private string selectedItem = "";
+
     // Start is called before the first frame update
     void Start()
     {
@@ -24,7 +26,9 @@ public class InventoryDisplayController : MonoBehaviour
     void Update()
     {
         int enabledCount = 0;
+        GameObject[] enabledObjects = new GameObject[transform.childCount];
 
+        // Update the displayed inventory items
         for (int i = 0; i < transform.childCount; i++)
         {
             GameObject thisChild = transform.GetChild(i).gameObject;
@@ -33,12 +37,57 @@ public class InventoryDisplayController : MonoBehaviour
             {
                 thisChild.SetActive(true);
                 thisChild.transform.localPosition = new Vector2(baseX, baseY - enabledCount * yStep + GetComponentInParent<RectTransform>().rect.height / 2);
+                enabledObjects[enabledCount] = thisChild;
                 enabledCount++;
             }
             else
             {
                 transform.GetChild(i).gameObject.transform.localPosition = new Vector2(baseX, baseY);
                 thisChild.SetActive(false);
+            }
+        }
+
+        // Switch to the next selected item
+        if (Input.GetKeyDown(KeyCode.F))
+        {
+
+            // If one inventory item
+            if (enabledCount == 1)
+            {
+                transform.Find(selectedItem).GetComponentInChildren<Image>().color = new Color(255, 255, 255, 0.75f);
+                selectedItem = enabledObjects[0].transform.Find("Label").GetComponent<Text>().text;
+                transform.Find(selectedItem).GetComponentInChildren<Image>().color = new Color(240, 200, 0, 0.75f);
+            }
+            else if (enabledCount == 0) // If no inventory items
+            {
+                selectedItem = "";
+            }
+            if (enabledCount > 1) // If multiple inventory items
+            {
+                for (int i = 0; i < enabledCount; i++)
+                {
+                    // Debug.Log(enabledObjects[i].transform.Find("Label").GetComponentInChildren<Text>().text);
+                    if (enabledObjects[i].transform.Find("Label").GetComponent<Text>().text == selectedItem) // Find the currently selected item
+                    {
+                        if (i + 1 >= enabledCount) // If this is the last item in the list
+                        {
+                            // Color the selected item
+                            transform.Find(selectedItem).GetComponentInChildren<Image>().color = new Color(255, 255, 255, 0.75f);
+                            selectedItem = enabledObjects[0].gameObject.transform.Find("Label").GetComponent<Text>().text;
+                            transform.Find(selectedItem).GetComponentInChildren<Image>().color = new Color(240, 200, 0, 0.75f);
+                            break;
+                        }
+                        else
+                        {
+                            transform.Find(selectedItem).GetComponentInChildren<Image>().color = new Color(255, 255, 255, 0.75f);
+                            selectedItem = enabledObjects[i + 1].gameObject.transform.Find("Label").GetComponent<Text>().text;
+                            transform.Find(selectedItem).GetComponentInChildren<Image>().color = new Color(240, 200, 0, 0.75f);
+                            break;
+
+                        }
+                    }
+                }
+
             }
         }
     }
