@@ -98,22 +98,22 @@ public class LlamaInteractions : MonoBehaviour
                 switch (other.name.Split(char.Parse(" ")) [0])
                 {
                     case "Tree":
-                        Harvest(other.gameObject, "Sticks", 2, 1.5f);
+                        Harvest(other.gameObject, "Stick", 2, 1.5f);
                         break;
                     case "Stick":
-                        Harvest(other.gameObject, "Sticks", 1, 0f);
+                        Harvest(other.gameObject, "Stick", 1, 0f);
                         break;
                     case "Rock":
-                        Harvest(other.gameObject, "Stones", 2, 3f);
+                        Harvest(other.gameObject, "Stone", 2, 3f);
                         break;
                     case "Stone":
-                        Harvest(other.gameObject, "Stones", 1, 0f);
+                        Harvest(other.gameObject, "Stone", 1, 0f);
                         break;
                     case "Grass":
                         Harvest(other.gameObject, "Grass", 1, 1);
                         break;
                     case "Egg":
-                        Harvest(other.gameObject, "Eggs", 1, 0f);
+                        Harvest(other.gameObject, "Egg", 1, 0f);
                         break;
                     default:
                         break;

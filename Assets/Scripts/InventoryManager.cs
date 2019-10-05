@@ -22,6 +22,7 @@ public class InventoryManager : MonoBehaviour
 
     public void AddItemToInventory(string itemName)
     {
+        Debug.Log(itemName);
         Text itemCountText = inventoryPanel.transform.Find(itemName).Find("Count").GetComponent<Text>();
 
         int itemCount = int.Parse(itemCountText.text);
@@ -40,5 +41,14 @@ public class InventoryManager : MonoBehaviour
         itemCount--;
 
         itemCountText.text = itemCount.ToString();
+    }
+
+    public int AmountInInventory(string itemName)
+    {
+        Text itemCountText = inventoryPanel.transform.Find(itemName).Find("Count").GetComponent<Text>();
+
+        int itemCount = int.Parse(itemCountText.text);
+
+        return itemCount;
     }
 }
