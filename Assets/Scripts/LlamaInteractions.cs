@@ -25,7 +25,7 @@ public class LlamaInteractions : MonoBehaviour
     {
         im = gameObject.transform.GetComponent<InventoryManager>();
         progressBar = transform.Find("InteractionProgressCanvas").Find("CircuilarProgressBar").GetComponent<Image>();
-        progressBar.fillAmount = 0f;
+        ResetHarvesting();
     }
 
     void Update()
@@ -43,7 +43,6 @@ public class LlamaInteractions : MonoBehaviour
         else
         {
             interactTrigger = false;
-            progressBar.fillAmount = 0f;
             ResetHarvesting();
         }
 
@@ -56,7 +55,6 @@ public class LlamaInteractions : MonoBehaviour
 
             Destroy(thingToHarvest);
             harvestingTimerStarted = false;
-            progressBar.fillAmount = 0f;
             ResetHarvesting();
         }
     }
@@ -101,6 +99,11 @@ public class LlamaInteractions : MonoBehaviour
         }
     }
 
+    void OnTriggerExit2D(Collider2D other)
+    {
+        ResetHarvesting();
+    }
+
     void Harvest(GameObject obj, string targetName, int targetQuantity, float timeToHarvest)
     {
         if (!harvestingTimerStarted)
@@ -124,5 +127,6 @@ public class LlamaInteractions : MonoBehaviour
         harvestingTime = 0f;
         successfulHarvestOutputName = "";
         successfulHarvestOutputQuantity = 0;
+        progressBar.fillAmount = 0f;
     }
 }
