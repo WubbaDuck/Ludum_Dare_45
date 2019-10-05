@@ -50,3 +50,6 @@ TagManager:
   - name: Interactables
     uniqueID: 3937462267
     locked: 0
+  - name: PlayerMenus
+    uniqueID: 3933603107
+    locked: 0

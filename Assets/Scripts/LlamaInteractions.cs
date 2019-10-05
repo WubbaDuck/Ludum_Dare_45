@@ -21,18 +21,36 @@ public class LlamaInteractions : MonoBehaviour
     // Progress bar stuff
     private Image progressBar;
 
+    // Crafting Stuff
+    public GameObject craftingMenuCanvas;
+
     void Start()
     {
         im = gameObject.transform.GetComponent<InventoryManager>();
         progressBar = transform.Find("InteractionProgressCanvas").Find("CircuilarProgressBar").GetComponent<Image>();
         ResetHarvesting();
+
+        // Disable crafting menu
+        craftingMenuCanvas.SetActive(false);
     }
 
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.E))
+        if (Input.GetKeyDown(KeyCode.C))
         {
-            interactTrigger = true;
+            craftingMenuCanvas.SetActive(!craftingMenuCanvas.activeInHierarchy);
+        }
+
+        if (Input.GetKeyDown(KeyCode.E) && !craftingMenuCanvas.activeInHierarchy)
+        {
+            if (interactableCollider.IsTouchingLayers(LayerMask.GetMask("Interactables")))
+            {
+                interactTrigger = true;
+            }
+            else
+            {
+                Debug.Log("Place Item");
+            }
         }
 
         if (Input.GetKey(KeyCode.E))

@@ -208,7 +208,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 80ade57d4e54b264fa31d2887c50180a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  interactableCollider: {fileID: 2002120642}
+  interactableCollider: {fileID: 2002120641}
 --- !u!114 &2002120644
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -338,11 +338,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Pivot.y
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2861510590307873758, guid: 47eda42d9bd65404dbc771508ed590c5,
-        type: 3}
-      propertyPath: m_Camera
-      value: 
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 47eda42d9bd65404dbc771508ed590c5, type: 3}
