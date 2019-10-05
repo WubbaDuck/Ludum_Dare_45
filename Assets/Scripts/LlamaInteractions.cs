@@ -6,6 +6,7 @@ using UnityEngine.UI;
 public class LlamaInteractions : MonoBehaviour
 {
     public Collider2D interactableCollider;
+    public GameObject inventoryPanel;
 
     // Harvesting stuff
     private bool interactTrigger = false;
@@ -16,34 +17,85 @@ public class LlamaInteractions : MonoBehaviour
     private GameObject thingToHarvest;
     private string successfulHarvestOutputName = "";
     private int successfulHarvestOutputQuantity = 0;
-    InventoryManager im;
+    private InventoryManager im;
+    private InventoryDisplayController ids;
 
     // Progress bar stuff
     private Image progressBar;
 
+    // Crafting Stuff
+    public GameObject craftingMenuCanvas;
+
+    // Place-able Items
+    public GameObject[] placeablePrefabs;
+    public GameObject objectsParent;
+
     void Start()
     {
         im = gameObject.transform.GetComponent<InventoryManager>();
+        ids = inventoryPanel.transform.GetComponent<InventoryDisplayController>();
         progressBar = transform.Find("InteractionProgressCanvas").Find("CircuilarProgressBar").GetComponent<Image>();
         ResetHarvesting();
+
+        // Disable crafting menu
+        craftingMenuCanvas.SetActive(false);
     }
 
     void Update()
     {
+        // Show/Hide the crafting window
+        if (Input.GetKeyDown(KeyCode.C))
+        {
+            craftingMenuCanvas.SetActive(!craftingMenuCanvas.activeInHierarchy);
+            Transform menu = craftingMenuCanvas.transform.Find("CraftingMenu");
+
+            for (int i = 0; i < menu.childCount; i++)
+            {
+                if (menu.GetChild(i).name.Split('_') [0] == "CraftingItem")
+                {
+                    menu.GetChild(i).GetComponent<Image>().color = new Color(255, 255, 255, 0.1f);
+                }
+            }
+        }
+
+        // Interact with things
+        if (Input.GetKeyDown(KeyCode.E) && !craftingMenuCanvas.activeInHierarchy)
+        {
+            if (interactableCollider.IsTouchingLayers(LayerMask.GetMask("Interactables")))
+            {
+                interactTrigger = true;
+            }
+            else
+            {
+                // Place the currently selected item
+                foreach (GameObject obj in placeablePrefabs)
+                {
+                    if (obj.name == ids.GetSelectedItem())
+                    {
+                        if (im.AmountInInventory(ids.GetSelectedItem()) > 0)
+                        {
+                            float spawnDistance = 1f;
+                            Vector3 spawnPos = transform.position + transform.up * spawnDistance;
+
+                            GameObject newObj = Instantiate(obj, spawnPos, Quaternion.identity);
+                            newObj.transform.parent = objectsParent.transform;
+                            newObj.name = obj.name;
+                            im.RemoveItemFromInventory(obj.name);
+                            break;
+                        }
+                    }
+                }
+            }
+        }
+
         if (Input.GetKey(KeyCode.E))
         {
-            interactTrigger = true;
             timer += Time.deltaTime;
 
             if (harvestingTime != 0f)
             {
                 progressBar.fillAmount = (timer - startTime) / harvestingTime;
             }
-        }
-        else
-        {
-            interactTrigger = false;
-            ResetHarvesting();
         }
 
         if (harvestingTimerStarted && timer > (startTime + harvestingTime))
@@ -55,6 +107,12 @@ public class LlamaInteractions : MonoBehaviour
 
             Destroy(thingToHarvest);
             harvestingTimerStarted = false;
+            ResetHarvesting();
+        }
+
+        if (Input.GetKeyUp(KeyCode.E))
+        {
+            interactTrigger = false;
             ResetHarvesting();
         }
     }
@@ -72,25 +130,37 @@ public class LlamaInteractions : MonoBehaviour
 
             if (interactableCollider.IsTouchingLayers(LayerMask.GetMask("Interactables")))
             {
-                switch (other.name)
+                switch (other.name.Split(char.Parse(" ")) [0])
                 {
                     case "Tree":
-                        Harvest(other.gameObject, "Sticks", 2, 1.5f);
+                        Harvest(other.gameObject, "Stick", 2, 1.5f);
                         break;
                     case "Stick":
-                        Harvest(other.gameObject, "Sticks", 1, 0f);
+                        Harvest(other.gameObject, "Stick", 1, 0.5f);
                         break;
                     case "Rock":
-                        Harvest(other.gameObject, "Stones", 2, 3f);
+                        Harvest(other.gameObject, "Stone", 2, 3f);
                         break;
                     case "Stone":
-                        Harvest(other.gameObject, "Stones", 1, 0f);
+                        Harvest(other.gameObject, "Stone", 1, 0.5f);
                         break;
                     case "Grass":
                         Harvest(other.gameObject, "Grass", 1, 1);
                         break;
                     case "Egg":
-                        Harvest(other.gameObject, "Eggs", 1, 0f);
+                        Harvest(other.gameObject, "Egg", 1, 0.5f);
+                        break;
+                    case "Nest":
+                        Harvest(other.gameObject, "Nest", 1, 1f);
+                        break;
+                    case "Fence":
+                        Harvest(other.gameObject, "Fence", 1, 1.5f);
+                        break;
+                    case "Gate":
+                        Harvest(other.gameObject, "Gate", 1, 2f);
+                        break;
+                    case "Hay":
+                        Harvest(other.gameObject, "Hay", 1, 1f);
                         break;
                     default:
                         break;
