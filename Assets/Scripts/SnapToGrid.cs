@@ -11,7 +11,7 @@ public class SnapToGrid : MonoBehaviour
 
     void Update()
     {
-        if (grid > 0f)
+        if (grid > 0f && Application.isEditor && !Application.isPlaying)
         {
             float reciprocalGrid = 1f / grid;
             x = Mathf.Round(transform.position.x * reciprocalGrid) / reciprocalGrid;

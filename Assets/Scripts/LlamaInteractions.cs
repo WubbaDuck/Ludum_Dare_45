@@ -36,11 +36,22 @@ public class LlamaInteractions : MonoBehaviour
 
     void Update()
     {
+        // Show/Hide the crafting window
         if (Input.GetKeyDown(KeyCode.C))
         {
             craftingMenuCanvas.SetActive(!craftingMenuCanvas.activeInHierarchy);
+            Transform menu = craftingMenuCanvas.transform.Find("CraftingMenu");
+
+            for (int i = 0; i < menu.childCount; i++)
+            {
+                if (menu.GetChild(i).name.Split('_') [0] == "CraftingItem")
+                {
+                    menu.GetChild(i).GetComponent<Image>().color = new Color(255, 255, 255, 0);
+                }
+            }
         }
 
+        // Interact with things
         if (Input.GetKeyDown(KeyCode.E) && !craftingMenuCanvas.activeInHierarchy)
         {
             if (interactableCollider.IsTouchingLayers(LayerMask.GetMask("Interactables")))
