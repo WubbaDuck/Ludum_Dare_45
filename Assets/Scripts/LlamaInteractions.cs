@@ -17,6 +17,7 @@ public class LlamaInteractions : MonoBehaviour
     private string successfulHarvestOutputName = "";
     private int successfulHarvestOutputQuantity = 0;
     InventoryManager im;
+    private bool craftingComplete = false;
 
     // Progress bar stuff
     private Image progressBar;
@@ -30,20 +31,19 @@ public class LlamaInteractions : MonoBehaviour
 
     void Update()
     {
-        if (Input.GetKey(KeyCode.E))
+        if (Input.GetKeyDown(KeyCode.E))
         {
             interactTrigger = true;
+        }
+
+        if (Input.GetKey(KeyCode.E))
+        {
             timer += Time.deltaTime;
 
             if (harvestingTime != 0f)
             {
                 progressBar.fillAmount = (timer - startTime) / harvestingTime;
             }
-        }
-        else
-        {
-            interactTrigger = false;
-            ResetHarvesting();
         }
 
         if (harvestingTimerStarted && timer > (startTime + harvestingTime))
@@ -55,6 +55,13 @@ public class LlamaInteractions : MonoBehaviour
 
             Destroy(thingToHarvest);
             harvestingTimerStarted = false;
+            ResetHarvesting();
+        }
+
+        if (Input.GetKeyUp(KeyCode.E))
+        {
+            interactTrigger = false;
+            craftingComplete = true;
             ResetHarvesting();
         }
     }
