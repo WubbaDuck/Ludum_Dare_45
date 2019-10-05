@@ -12,8 +12,6 @@ public class InventoryManager : MonoBehaviour
         InitInventoryValues(0); // Set the initial value of the inventory items
     }
 
-    void FixedUpdate() { }
-
     void InitInventoryValues(int initialValue)
     {
         for (int i = 0; i < inventoryPanel.transform.childCount; i++)
@@ -22,7 +20,7 @@ public class InventoryManager : MonoBehaviour
         }
     }
 
-    void AddItemToInventory(string itemName)
+    public void AddItemToInventory(string itemName)
     {
         Text itemCountText = inventoryPanel.transform.Find(itemName).Find("Count").GetComponent<Text>();
 
@@ -33,7 +31,7 @@ public class InventoryManager : MonoBehaviour
         itemCountText.text = itemCount.ToString();
     }
 
-    void RemoveItemFromInventory(string itemName)
+    public void RemoveItemFromInventory(string itemName)
     {
         Text itemCountText = inventoryPanel.transform.Find(itemName).Find("Count").GetComponent<Text>();
 
