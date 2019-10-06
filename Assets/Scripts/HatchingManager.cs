@@ -5,7 +5,7 @@ using UnityEngine;
 public class HatchingManager : MonoBehaviour
 {
     public GameObject duckPrefab;
-    public GameObject duckParent;
+    private GameObject duckParent;
     private float hatchingTime = 0f;
     private int numberOfDucks = 0;
     private float startTime = 0f;
@@ -15,6 +15,17 @@ public class HatchingManager : MonoBehaviour
         hatchingTime = Random.Range(15, 30);
         numberOfDucks = Random.Range(1, 10);
         startTime = Time.time;
+
+        GameObject[] objects = Resources.FindObjectsOfTypeAll(typeof(GameObject)) as GameObject[];
+
+        for (int i = 0; i < objects.Length; i++)
+        {
+            if (objects[i].name == "Animals")
+            {
+                duckParent = objects[i];
+                break;
+            }
+        }
     }
 
     void Update()

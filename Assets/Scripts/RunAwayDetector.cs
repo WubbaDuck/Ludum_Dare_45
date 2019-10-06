@@ -5,13 +5,13 @@ using UnityEngine;
 
 public class RunAwayDetector : MonoBehaviour
 {
-    public GameObject mainTarget;
     public GameObject runAwayTarget;
     public float runAwayTargetDistance = 100f;
     public float runAwayTime = 1f;
     public float runAwaySpeed = 5f;
     public float defaultSpeed = 3f;
 
+    private GameObject mainTarget;
     private AIDestinationSetter aiDest;
     private AIPath aIPath;
     private float startTime = 0f;
@@ -23,6 +23,20 @@ public class RunAwayDetector : MonoBehaviour
         aiDest = transform.GetComponent<AIDestinationSetter>();
         aIPath = transform.GetComponent<AIPath>();
         runAwayTimeModifier = Random.Range(0, 1);
+
+        GameObject[] objects = Resources.FindObjectsOfTypeAll(typeof(GameObject)) as GameObject[];
+
+        for (int i = 0; i < objects.Length; i++)
+        {
+            if (objects[i].name == "Llama")
+            {
+                if (objects[i].activeInHierarchy)
+                {
+                    mainTarget = objects[i];
+                    break;
+                }
+            }
+        }
     }
 
     // Update is called once per frame
