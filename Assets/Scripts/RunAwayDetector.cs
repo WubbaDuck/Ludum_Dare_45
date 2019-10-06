@@ -41,7 +41,6 @@ public class RunAwayDetector : MonoBehaviour
 
     public void Hit(Quaternion rotation)
     {
-        Debug.Log("hit duck");
         Vector3 runAwayTargetPos = mainTarget.transform.position + rotation * mainTarget.transform.up * runAwayTargetDistance;
         runAwayTarget.transform.position = runAwayTargetPos;
         aiDest.target = runAwayTarget.transform;
