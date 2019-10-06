@@ -3683,6 +3683,15 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4547949780948899016, guid: a97856e22481b0b4687ffef8660b3d36,
+        type: 3}
+      propertyPath: moveSpeed
+      value: 1.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 2002120636, guid: a97856e22481b0b4687ffef8660b3d36, type: 3}
+      propertyPath: m_ApplyRootMotion
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 1439259802, guid: a97856e22481b0b4687ffef8660b3d36, type: 3}
       propertyPath: m_IsActive
       value: 1
