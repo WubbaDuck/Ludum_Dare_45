@@ -21,12 +21,6 @@ public class LlamaMovement : MonoBehaviour
         animator.SetFloat("Horizontal", movement.x);
         animator.SetFloat("Vertical", movement.y);
         animator.SetFloat("Speed", movement.sqrMagnitude);
-
-        if (movement.magnitude < 0.01)
-        {
-            Debug.Log("Log");
-            // transform.localRotation = Quaternion.AngleAxis(0, transform.up);
-        }
     }
 
     void LateUpdate()
