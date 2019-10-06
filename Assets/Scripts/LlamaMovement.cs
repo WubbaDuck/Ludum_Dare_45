@@ -21,17 +21,23 @@ public class LlamaMovement : MonoBehaviour
         animator.SetFloat("Horizontal", movement.x);
         animator.SetFloat("Vertical", movement.y);
         animator.SetFloat("Speed", movement.sqrMagnitude);
+
+        if (movement.magnitude < 0.01)
+        {
+            Debug.Log("Log");
+            // transform.localRotation = Quaternion.AngleAxis(0, transform.up);
+        }
     }
 
     void LateUpdate()
     {
         if (animator.GetCurrentAnimatorClipInfo(0) [0].clip.name == "Idle")
         {
-            transform.rotation = Quaternion.Euler(0, 0, rotation);
+            // transform.rotation = Quaternion.Euler(0, 0, rotation);
         }
         else
         {
-            rotation = transform.rotation.eulerAngles.z;
+            // rotation = transform.rotation.eulerAngles.z;
         }
     }
 

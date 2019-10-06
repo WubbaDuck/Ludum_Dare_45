@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using Pathfinding;
 using UnityEngine;
 
 public class HatchingManager : MonoBehaviour
@@ -46,6 +47,9 @@ public class HatchingManager : MonoBehaviour
             duck.transform.parent = duckParent.transform;
         }
 
+        // Udpate A* grid
+        Bounds bounds = new Bounds(transform.position, new Vector3(10, 10, 0));
+        AstarPath.active.UpdateGraphs(bounds, 0.1f);
         Destroy(gameObject);
     }
 }

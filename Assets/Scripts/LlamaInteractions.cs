@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using Pathfinding;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -81,6 +82,11 @@ public class LlamaInteractions : MonoBehaviour
                             newObj.transform.parent = objectsParent.transform;
                             newObj.name = obj.name;
                             im.RemoveItemFromInventory(obj.name);
+
+                            // Udpate A* grid
+                            Bounds bounds = new Bounds(newObj.transform.position, new Vector3(10, 10, 0));
+                            AstarPath.active.UpdateGraphs(bounds, 0.1f);
+
                             break;
                         }
                     }
@@ -105,6 +111,10 @@ public class LlamaInteractions : MonoBehaviour
                 im.AddItemToInventory(successfulHarvestOutputName);
             }
 
+            // Udpate A* grid
+            Bounds bounds = new Bounds(thingToHarvest.transform.position, new Vector3(10, 10, 0));
+            AstarPath.active.UpdateGraphs(bounds, 0.1f);
+
             Destroy(thingToHarvest);
             harvestingTimerStarted = false;
             ResetHarvesting();
@@ -112,6 +122,12 @@ public class LlamaInteractions : MonoBehaviour
 
         if (Input.GetKeyUp(KeyCode.E))
         {
+            // Toggle Gate
+            if ((Time.time - timer) <= 0.1 && thingToHarvest.gameObject.tag == "Gate")
+            {
+                thingToHarvest.gameObject.GetComponent<GateManager>().ToggleGate();
+            }
+
             interactTrigger = false;
             ResetHarvesting();
         }
@@ -161,6 +177,9 @@ public class LlamaInteractions : MonoBehaviour
                         break;
                     case "Hay":
                         Harvest(other.gameObject, "Hay", 1, 1f);
+                        break;
+                    case "Pen":
+                        Harvest(other.gameObject, "Pen", 1, 1f);
                         break;
                     default:
                         break;
