@@ -113,7 +113,7 @@ public class LlamaInteractions : MonoBehaviour
 
             // Udpate A* grid
             Bounds bounds = new Bounds(thingToHarvest.transform.position, new Vector3(10, 10, 0));
-            AstarPath.active.UpdateGraphs(bounds);
+            AstarPath.active.UpdateGraphs(bounds, 0.1f);
 
             Destroy(thingToHarvest);
             harvestingTimerStarted = false;
@@ -122,6 +122,12 @@ public class LlamaInteractions : MonoBehaviour
 
         if (Input.GetKeyUp(KeyCode.E))
         {
+            // Toggle Gate
+            if ((Time.time - timer) <= 0.1 && thingToHarvest.gameObject.tag == "Gate")
+            {
+                thingToHarvest.gameObject.GetComponent<GateManager>().ToggleGate();
+            }
+
             interactTrigger = false;
             ResetHarvesting();
         }
@@ -171,6 +177,9 @@ public class LlamaInteractions : MonoBehaviour
                         break;
                     case "Hay":
                         Harvest(other.gameObject, "Hay", 1, 1f);
+                        break;
+                    case "Pen":
+                        Harvest(other.gameObject, "Pen", 1, 1f);
                         break;
                     default:
                         break;
