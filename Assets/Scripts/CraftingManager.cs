@@ -35,7 +35,6 @@ public class CraftingManager : MonoBehaviour, IPointerClickHandler, IPointerEnte
             if (objects[i].name == "Llama")
             {
                 inventoryManager = objects[i].GetComponent<InventoryManager>();
-                Debug.Log(inventoryManager);
                 break;
             }
         }

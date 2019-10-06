@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 888113015208064221}
   - component: {fileID: 888113015208064223}
   - component: {fileID: 888113015208064222}
+  - component: {fileID: 3911090743808673811}
   m_Layer: 9
   m_Name: Nest
   m_TagString: Untagged
@@ -72,7 +73,7 @@ SpriteRenderer:
   m_SortingLayer: 3
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: 7e8c579a87cb4e44fb688eae12a3f51a, type: 3}
-  m_Color: {r: 0.6287344, g: 0.011764714, b: 0.8980392, a: 1}
+  m_Color: {r: 0.77000695, g: 0.12941176, b: 0.94509804, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -121,3 +122,17 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   grid: 0.5
+--- !u!114 &3911090743808673811
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 888113015208064290}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4eac99913e7952c469716cb8c95ca43f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  duckPrefab: {fileID: 336383596144872165, guid: 250d15c1bb01cef4ab6c12be774da08e,
+    type: 3}

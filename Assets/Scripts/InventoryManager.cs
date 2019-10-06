@@ -44,9 +44,24 @@ public class InventoryManager : MonoBehaviour
 
     public int AmountInInventory(string itemName)
     {
-        Text itemCountText = inventoryPanel.transform.Find(itemName).Find("Count").GetComponent<Text>();
+        int itemCount = 0;
+        if (inventoryPanel == null)
+        {
+            Debug.Log("NULL IP");
+            GameObject[] objects = Resources.FindObjectsOfTypeAll(typeof(GameObject)) as GameObject[];
 
-        int itemCount = int.Parse(itemCountText.text);
+            for (int i = 0; i < objects.Length; i++)
+            {
+                if (objects[i].name == "Inventory Canvas")
+                {
+                    inventoryPanel = objects[i].transform.Find("Inventory Panel").gameObject;
+                    break;
+                }
+            }
+        }
+
+        Text itemCountText = inventoryPanel.transform.Find(itemName).Find("Count").GetComponent<Text>();
+        itemCount = int.Parse(itemCountText.text);
 
         return itemCount;
     }
