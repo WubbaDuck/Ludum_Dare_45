@@ -45,6 +45,7 @@ public class HatchingManager : MonoBehaviour
         {
             GameObject duck = Instantiate(duckPrefab, transform.position, Quaternion.identity);
             duck.transform.parent = duckParent.transform;
+            duck.name = "Duck";
         }
 
         // Udpate A* grid

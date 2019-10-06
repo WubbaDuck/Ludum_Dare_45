@@ -19,7 +19,7 @@ TagManager:
   - Interactables
   - Ducks
   - Hit Ducks
-  - 
+  - Background
   - 
   - 
   - 
@@ -43,9 +43,6 @@ TagManager:
   - name: Default
     uniqueID: 0
     locked: 0
-  - name: UI
-    uniqueID: 3543713957
-    locked: 0
   - name: Player
     uniqueID: 1373567077
     locked: 0
@@ -54,4 +51,7 @@ TagManager:
     locked: 0
   - name: PlayerMenus
     uniqueID: 3933603107
+    locked: 0
+  - name: UI
+    uniqueID: 3543713957
     locked: 0
