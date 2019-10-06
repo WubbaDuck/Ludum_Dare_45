@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using Pathfinding;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -81,6 +82,11 @@ public class LlamaInteractions : MonoBehaviour
                             newObj.transform.parent = objectsParent.transform;
                             newObj.name = obj.name;
                             im.RemoveItemFromInventory(obj.name);
+
+                            // Udpate A* grid
+                            Bounds bounds = new Bounds(newObj.transform.position, new Vector3(10, 10, 0));
+                            AstarPath.active.UpdateGraphs(bounds, 0.1f);
+
                             break;
                         }
                     }
@@ -104,6 +110,10 @@ public class LlamaInteractions : MonoBehaviour
             {
                 im.AddItemToInventory(successfulHarvestOutputName);
             }
+
+            // Udpate A* grid
+            Bounds bounds = new Bounds(thingToHarvest.transform.position, new Vector3(10, 10, 0));
+            AstarPath.active.UpdateGraphs(bounds);
 
             Destroy(thingToHarvest);
             harvestingTimerStarted = false;
